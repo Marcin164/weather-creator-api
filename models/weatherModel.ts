@@ -32,8 +32,8 @@ WeatherSchema.statics.checkIfWeatherExists = async function():Promise<Boolean | 
   return false
 };
 
-WeatherSchema.statics.deleteWeather = function(condition: Object){
-  this.deleteMany(condition)
+WeatherSchema.statics.deleteWeather = async function(){
+  await this.deleteMany({})
 }
 
 WeatherSchema.statics.createWeather = function(weatherObject:Object){

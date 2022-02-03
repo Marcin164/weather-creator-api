@@ -1,6 +1,7 @@
 import Weather from "../models/weatherModel";
+import Helper from "../helpers/dateHelper"
 
-const citiesArray = [
+const citiesArray: Array<string> = [
   "Warsaw",
   "Dubai",
   "Paris",
@@ -34,7 +35,7 @@ const citiesArray = [
   "Quebec",
 ];
 
-const windDirectionArray = [
+const windDirectionArray: Array<string> = [
   "North",
   "North-East",
   "East",
@@ -45,7 +46,7 @@ const windDirectionArray = [
   "North-West",
 ];
 
-const weatherNameArray = [
+const weatherNameArray: Array<string> = [
   "Sunny",
   "Fog",
   "Rain",
@@ -60,7 +61,7 @@ const weatherNameArray = [
   "Windy",
 ];
 
-const airTagArray = [
+const airTagArray: Array<string> = [
   "SO2",
   "NO2",
   "CO",
@@ -75,82 +76,27 @@ const airTagArray = [
 let date: Date = new Date();
 
 export const createWeather = async (req: any, res: any) => {
-  const checkIfWeatherExists: Promise<Boolean | number> =
-    await Weather.checkIfWeatherExists();
-
-  if ((await checkIfWeatherExists) !== 217) {
+    await Weather.deleteWeather();
     createSevenDaysWeather();
-  }
 };
 
 const createSevenDaysWeather = () => {
-  let day: number = date.getDate()-1;
+  let day: number = date.getDate();
   let month: number = date.getMonth()+1;
   let year: number = date.getFullYear();
 
-  Weather.deleteWeather(undefined);
-  for (let numberOfDay = 0; numberOfDay < 7; numberOfDay++) {
-    for (let city = 0; city < citiesArray.length; city++) {
-      day += 1
-      if (month == 1 || month == 3 || month == 5 || month == 7 || month == 8 || month == 10 || month == 12) {
-        if (day > 31) {
-          day = 1;
-    
-          if(month + 1 > 12){
-            month = 1
-            year += 1
-          }else{
-            month+=1
-          }
-    
-        }
-      }
-      if (month == 4 || month == 6 || month == 9 || month == 11) {
-        if (day > 30) {
-          day = 1;
-          
-          if(month + 1 > 12){
-            month = 1
-            year += 1
-          }else{
-            month+=1
-          }
-    
-        }
-      }
-      if (month == 2) {
-        if ((0 == year % 4 && 0 != year % 100) || 0 == year % 400) {
-          if (day > 29) {
-            day = 1;
-    
-            if(month + 1 > 12){
-              month = 1
-              year += 1
-            }else{
-              month+=1
-            }
-    
-          }
-        } else {
-          if (day > 28) {
-            day = 1;
-    
-            if(month + 1 > 12){
-              month = 1
-              year += 1
-            }else{
-              month+=1
-            }
-    
-          }
-        }
-      }
-      console.log(`Ilosc dni ${numberOfDay}, dzien: ${day}`)
-      Weather.createWeather(createData(numberOfDay, city, day, month, year));
+  for (let numberOfDay:number = 0; numberOfDay < 7; numberOfDay++) {
+    for (let city:number = 0; city < citiesArray.length; city++) {
+
+      let dateHelper = new Helper(day, month, year, numberOfDay)
+      let dateObject = dateHelper.changeMonthAndYear()
+      
+      Weather.createWeather(createData(city, dateObject.day, dateObject.month, dateObject.year));
     }
   }
 };
-const createData = (numberOfDay: number, city: number, day:number, month:number, year:number): Object => {
+
+const createData = (city: number, day:number, month:number, year:number): Object => {
   const weather = {
     date: setDate(day, month, year),
     city: setCity(city),
@@ -163,11 +109,11 @@ const createData = (numberOfDay: number, city: number, day:number, month:number,
   return weather;
 };
 
-const setDate = (day:number, month:number, year:number): String => {
+const setDate = (day:number, month:number, year:number): string => {
   return `${day}.${month}.${year}`;
 };
 
-const setCity = (city: number): String => {
+const setCity = (city: number): string => {
   return citiesArray[city];
 };
 
