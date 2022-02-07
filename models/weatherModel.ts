@@ -21,6 +21,10 @@ const WeatherSchema:Schema = new Schema({
       value: Number,
     },
   ],
+  airQualityStatus: {
+    title: String,
+    subTitle: String,
+  },
   sunRise: String,
   moonRise: String,
 });

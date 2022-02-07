@@ -73,6 +73,25 @@ const airTagArray: Array<string> = [
   "PM10",
 ];
 
+const airQualityStatusArray: Array<Object> = [
+  {
+    title: "Good",
+    subTitle: "Take a deep breathe"
+  },
+  {
+    title: "Not bad",
+    subTitle: "It's safe to go outside"
+  },
+  {
+    title: "Bad",
+    subTitle: "Better stay home"
+  },
+  {
+    title: "Terrible",
+    subTitle: "Don't open the window"
+  }
+]
+
 let date: Date = new Date();
 
 export const createWeather = async (req: any, res: any) => {
@@ -102,6 +121,7 @@ const createData = (city: number, day:number, month:number, year:number): Object
     city: setCity(city),
     data: setData(),
     airQuality: setAirQuality(),
+    airQualityStatus: setAirQualityStatus(),
     sunRise: setSunRise(),
     moonRise: setMoonRise(),
   };
@@ -153,6 +173,10 @@ const setAirQuality = (): Array<Object> => {
 
   return airQualityArray;
 };
+
+const setAirQualityStatus = () => {
+  return airQualityStatusArray[(Math.floor(Math.random() * airQualityStatusArray.length))]
+}
 
 const setSunRise = (): String => {
   return "6:43";
