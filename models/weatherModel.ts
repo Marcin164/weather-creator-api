@@ -25,6 +25,7 @@ const WeatherSchema:Schema = new Schema({
     title: String,
     subTitle: String,
   },
+  events:Array,
   sunRise: String,
   moonRise: String,
 });

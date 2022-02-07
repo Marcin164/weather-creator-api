@@ -73,6 +73,16 @@ const airTagArray: Array<string> = [
   "PM10",
 ];
 
+const eventsNameArray: Array<string> = [
+  "Tornado",
+  "Volcano",
+  "Meteor",
+  "Lightning",
+  "Earthquake",
+  "Tsunami",
+  "Hurricane"
+]
+
 const airQualityStatusArray: Array<Object> = [
   {
     title: "Good",
@@ -122,6 +132,7 @@ const createData = (city: number, day:number, month:number, year:number): Object
     data: setData(),
     airQuality: setAirQuality(),
     airQualityStatus: setAirQualityStatus(),
+    events: setEvents(),
     sunRise: setSunRise(),
     moonRise: setMoonRise(),
   };
@@ -176,6 +187,17 @@ const setAirQuality = (): Array<Object> => {
 
 const setAirQualityStatus = () => {
   return airQualityStatusArray[(Math.floor(Math.random() * airQualityStatusArray.length))]
+}
+
+const setEvents = () => {
+  let eventsArray:Array<string> = []
+  let amountOfEvents = Math.floor(Math.random() * eventsNameArray.length)
+  for(let i = 0 ; i < amountOfEvents ; i++){
+    let event = eventsNameArray[Math.floor(Math.random() * eventsNameArray.length)]
+    if(eventsArray.includes(event)) console.log()
+    else eventsArray.push(event)
+  }
+  return eventsArray
 }
 
 const setSunRise = (): String => {
